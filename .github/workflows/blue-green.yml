@@ -1,0 +1,83 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  ACR_NAME: demogaurav.azurecr.io
+  ACR_REPO_NAME: demogaurav.azurecr.io/docker-java-app
+  ARTIFACT_NAME: docker-java-app
+  RESOURCE_GROUP: Gaurav-RG
+  AKS_CLUSTER_NAME: Gaurav-AKS-cluster
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Login to Azure CLI
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER_NAME }}
+          az acr login -n ${{ env.ACR_NAME }}
+          docker login ${{ env.ACR_NAME }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
+          kubectl version --client
+          kubectl apply -f ./kubernetes/blue-deploy.yaml
+          kubectl apply -f ./kubernetes/green-deploy.yaml
+          kubectl apply -f ./kubernetes/service.yaml
+      
+      # Runs a set of commands using the runners shell
+      - name: Deploy to Kubernetes cluster
+        uses: Azure/k8s-deploy@v1.3
+        with:
+          # Choose the target Kubernetes namespace. If the namespace is not provided, the commands will run in the default namespace.
+          namespace: # optional
+          # Path to the manifest files which will be used for deployment.
+          manifests: # default is 
+          # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
+          images: # optional
+          # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
+          imagepullsecrets: # optional
+          # Version of kubectl. Installs a specific version of kubectl binary
+          kubectl-version: # optional
+          # Deployment strategy to be used. Allowed values are none, canary and blue-green
+          strategy: # optional, default is none
+          # Route based on service, ingress or SMI for blue-green strategy
+          route-method: # optional, default is service
+          # Indicates the buffer time in minutes before the switch is made to the green version (max is 300 min ie. 5hrs)
+          version-switch-buffer: # optional, default is 0
+          # Traffic split method to be used. Allowed values are pod, smi
+          traffic-split-method: # optional, default is pod
+          # Baseline and canary replicas count; valid value i.e between 0 to 100.
+          baseline-and-canary-replicas: # optional, default is 0
+          # Percentage of traffic redirect to canary deployment
+          percentage: # optional, default is 0
+          # deploy/promote/reject
+          action: # default is deploy
+          # Deploy when a previous deployment already exists. If true then --force argument is added to the apply command
+          force: # optional
+          # Github token
+          token: # default is ${{ github.token }}
