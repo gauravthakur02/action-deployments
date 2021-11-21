@@ -45,9 +45,6 @@ jobs:
           az acr login -n ${{ env.ACR_NAME }}
           docker login ${{ env.ACR_NAME }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
           kubectl version --client
-          kubectl apply -f ./kubernetes/blue-deploy.yaml
-          kubectl apply -f ./kubernetes/green-deploy.yaml
-          kubectl apply -f ./kubernetes/service.yaml
       
       # Runs a set of commands using the runners shell
       - name: Deploy to Kubernetes cluster
@@ -56,19 +53,25 @@ jobs:
           # Choose the target Kubernetes namespace. If the namespace is not provided, the commands will run in the default namespace.
           namespace: # optional
           # Path to the manifest files which will be used for deployment.
-          manifests: # default is 
+          manifests: |
+            # The manifest files are in YAML format.
+            # The files can be found in the GitHub repository.
+            # The files are relative to the root of the repository.
+            - ./kubernetes/blue-deploy.yaml
+            - ./kubernetes/green-deploy.yaml
+            - ./kubernetes/service.yaml
           # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
-          images: # optional
+          images: demogaurav.azurecr.io/nginx-html:2 # optional
           # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
           imagepullsecrets: # optional
           # Version of kubectl. Installs a specific version of kubectl binary
           kubectl-version: # optional
           # Deployment strategy to be used. Allowed values are none, canary and blue-green
-          strategy: # optional, default is none
+          strategy: blue-green # optional, default is none
           # Route based on service, ingress or SMI for blue-green strategy
           route-method: # optional, default is service
           # Indicates the buffer time in minutes before the switch is made to the green version (max is 300 min ie. 5hrs)
-          version-switch-buffer: # optional, default is 0
+          version-switch-buffer: 5 # optional, default is 0
           # Traffic split method to be used. Allowed values are pod, smi
           traffic-split-method: # optional, default is pod
           # Baseline and canary replicas count; valid value i.e between 0 to 100.
