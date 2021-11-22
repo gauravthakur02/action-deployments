@@ -64,7 +64,7 @@ jobs:
             ./kubernetes/blue-deploy.yaml
           images: |
             demogaurav.azurecr.io/green-nginx:1
-          strategy: canary
+          strategy: blue-green
           traffic-split-method: pod
           action: deploy  #deploy is the default; we will later use this to promote/reject
 
