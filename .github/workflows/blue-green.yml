@@ -46,6 +46,7 @@ jobs:
           docker login ${{ env.ACR_NAME }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
           kubectl version --client
           kubectl apply -f ./kubernetes/blue-deploy.yaml
+          kubectl apply -f ./kubernetes/service.yaml
       
       # Runs a set of commands using the runners shell
       - name: Deploy to Kubernetes cluster
@@ -54,9 +55,7 @@ jobs:
           # Choose the target Kubernetes namespace. If the namespace is not provided, the commands will run in the default namespace.
           namespace: # optional
           # Path to the manifest files which will be used for deployment.
-          manifests: |
-             ./kubernetes/service.yaml
-             ./kubernetes/green-deploy.yaml
+          manifests: ./kubernetes/green-deploy.yaml
             #  ./kubernetes/green-deploy.yaml
           # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
           images: demogaurav.azurecr.io/nginx-html:2 # optional
