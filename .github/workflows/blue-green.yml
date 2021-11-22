@@ -93,7 +93,7 @@ jobs:
           namespace: default
           manifests: |
             ./kubernetes/service.yaml
-            ./kubernetes/blue-deploy.yaml
+            ./kubernetes/green-deploy.yaml
           images: |
             demogaurav.azurecr.io/green-nginx:1
           strategy: blue-green
