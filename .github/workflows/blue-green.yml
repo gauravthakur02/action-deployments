@@ -67,7 +67,7 @@ jobs:
             #  ./kubernetes/green-deploy.yaml
           # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
           images: |
-            demogaurav.azurecr.io/blue-nginx:1
+            demogaurav.azurecr.io/green-nginx:1
           # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
           imagepullsecrets: # optional
           # Version of kubectl. Installs a specific version of kubectl binary
@@ -131,7 +131,7 @@ jobs:
             ./kubernetes/service.yaml
             ./kubernetes/blue-deploy.yaml
           images: |
-            demogaurav.azurecr.io/blue-nginx:1
+            demogaurav.azurecr.io/green-nginx:1
           strategy: blue-green
           traffic-split-method: pod
           action: reject  #deploy is the default; we will later use this to promote/reject
