@@ -32,33 +32,19 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - uses: azure/aks-set-context@v1
+      # This action can be used to set cluster context before other actions like azure/k8s-deploy, azure/k8s-create-secret or any kubectl commands (in script) can be run subsequently in the workflow.
+      - name: Set cluster context
+        uses: azure/aks-set-context@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}
           resource-group: ${{ env.RESOURCE_GROUP }}
-
-      # Login to Azure CLI
-      # - name: 'Login via Azure CLI'
-      #   uses: azure/login@v1
-      #   with:
-      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       # Runs a set of commands using the runners shell
-      # - name: Run a multi-line script
-      #   run: |
-      #     az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER_NAME }}
-      #     az acr login -n ${{ env.ACR_NAME }}
-      #     docker login ${{ env.ACR_NAME }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
-      #     kubectl version --client
-      #     # kubectl apply -f ./kubernetes/blue-deploy.yaml
-      #     # kubectl apply -f ./kubernetes/service.yaml
-      
-      # Runs a set of commands using the runners shell
-      - uses: azure/k8s-deploy@v1.3
+      - name: Deploy app
+        uses: azure/k8s-deploy@v1.3
         with:
           namespace: default
-          #manifests: ${{ steps.bake.outputs.manifestsBundle }}
           manifests: |
             ./kubernetes/service.yaml
             ./kubernetes/blue-deploy.yaml
@@ -81,13 +67,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: azure/aks-set-context@v1
+      - name: Set cluster context
+        uses: azure/aks-set-context@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}
           resource-group: ${{ env.RESOURCE_GROUP }}
 
-      - uses: azure/k8s-deploy@v1.3
+      - name: Promote App
+        uses: azure/k8s-deploy@v1.3
         if: ${{ success() }}
         with:
           namespace: default
@@ -100,7 +88,8 @@ jobs:
           traffic-split-method: pod
           action: promote  #deploy is the default; we will later use this to promote/reject
 
-      - uses: azure/k8s-deploy@v1.3
+      - name: Reject App
+        uses: azure/k8s-deploy@v1.3
         if: ${{ failure() }}
         with:
           namespace: default

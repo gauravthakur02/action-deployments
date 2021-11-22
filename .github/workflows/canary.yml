@@ -32,17 +32,17 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - uses: azure/aks-set-context@v1
+      - name: Set cluster context
+        uses: azure/aks-set-context@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}
           resource-group: ${{ env.RESOURCE_GROUP }}
       
-      # Runs a set of commands using the runners shell
-      - uses: azure/k8s-deploy@v1.3
+      - name: Deploy app
+        uses: azure/k8s-deploy@v1.3
         with:
           namespace: default
-          #manifests: ${{ steps.bake.outputs.manifestsBundle }}
           manifests: |
             ./kubernetes/service.yaml
             ./kubernetes/blue-deploy.yaml
@@ -67,13 +67,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: azure/aks-set-context@v1
+      - name: Set cluster context
+        uses: azure/aks-set-context@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}
           resource-group: ${{ env.RESOURCE_GROUP }}
 
-      - uses: azure/k8s-deploy@v1.3
+      - name: Promote App
+        uses: azure/k8s-deploy@v1.3
         if: ${{ success() }}
         with:
           namespace: default
@@ -88,7 +90,8 @@ jobs:
           percentage: 20
           baseline-and-canary-replicas: 2
 
-      - uses: azure/k8s-deploy@v1.3
+      - name: Reject App
+        uses: azure/k8s-deploy@v1.3
         if: ${{ failure() }}
         with:
           namespace: default

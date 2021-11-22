@@ -50,3 +50,87 @@ docker push demo.azurecr.io/blue-nginx:1
 ```
 docker push demo.azurecr.io/green-nginx:1
 ```
+---
+2. **Create Kubernetes manifest files in `/kubernetes`:**
+* Create `blue-deploy.yaml` file:
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+      matchLabels:
+        app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers: 
+        - name: nginx
+          image: demogaurav.azurecr.io/blue-nginx:1
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: 200m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+```
+* Create `green-deploy.yaml` file:
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-2
+spec:
+  replicas: 3
+  selector:
+      matchLabels:
+        app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers: 
+        - name: nginx
+          image: demogaurav.azurecr.io/green-nginx:1
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: 200m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+```
+* Create `service.yaml` file:
+```yml
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nginx
+  labels: 
+    app: nginx
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector: 
+    app: nginx
+  type: LoadBalancer
+```
+---
+3. **Create GitHub Actions workflow in `/.github/workflows`:**
+```yml
+
+```
