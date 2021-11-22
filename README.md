@@ -15,6 +15,12 @@
 ```
 az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 1 --enable-addons monitoring --generate-ssh-keys
 ```
+Connect, Start and Stop AKS Cluster using [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/aks/cluster?view=azure-cli-latest):
+```
+az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+az aks start --name myAKSCluster --resource-group myResourceGroup
+az aks stop --name myAKSCluster --resource-group myResourceGroup
+```
 * Application source code
 * Docker image of the application
 * Kubernetes manifest files _(blue-deploy.yaml, green-deploy.yaml, service.yaml)_
