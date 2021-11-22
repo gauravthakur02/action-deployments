@@ -23,7 +23,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  deployapp:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -32,35 +32,42 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Login to Azure CLI
-      - name: 'Login via Azure CLI'
-        uses: azure/login@v1
+      - uses: azure/aks-set-context@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          resource-group: ${{ env.RESOURCE_GROUP }}
+
+      # Login to Azure CLI
+      # - name: 'Login via Azure CLI'
+      #   uses: azure/login@v1
+      #   with:
+      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER_NAME }}
-          az acr login -n ${{ env.ACR_NAME }}
-          docker login ${{ env.ACR_NAME }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
-          kubectl version --client
-          # kubectl apply -f ./kubernetes/blue-deploy.yaml
-          # kubectl apply -f ./kubernetes/service.yaml
+      # - name: Run a multi-line script
+      #   run: |
+      #     az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER_NAME }}
+      #     az acr login -n ${{ env.ACR_NAME }}
+      #     docker login ${{ env.ACR_NAME }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
+      #     kubectl version --client
+      #     # kubectl apply -f ./kubernetes/blue-deploy.yaml
+      #     # kubectl apply -f ./kubernetes/service.yaml
       
       # Runs a set of commands using the runners shell
       - name: Deploy to Kubernetes cluster
-        uses: Azure/k8s-deploy@v1.3
+        uses: azure/k8s-deploy@v1.4
         with:
           # Choose the target Kubernetes namespace. If the namespace is not provided, the commands will run in the default namespace.
           namespace: # optional
           # Path to the manifest files which will be used for deployment.
           manifests: |
-              ./kubernetes/blue-deploy.yaml
               ./kubernetes/service.yaml
+              ./kubernetes/blue-deploy.yaml
             #  ./kubernetes/green-deploy.yaml
           # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
-          images: demogaurav.azurecr.io/green-nginx:1 # optional
+          images: |
+            demogaurav.azurecr.io/blue-nginx:1
           # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
           imagepullsecrets: # optional
           # Version of kubectl. Installs a specific version of kubectl binary
@@ -70,7 +77,7 @@ jobs:
           # Route based on service, ingress or SMI for blue-green strategy
           route-method: service # optional, default is service
           # Indicates the buffer time in minutes before the switch is made to the green version (max is 300 min ie. 5hrs)
-          version-switch-buffer: 2 # optional, default is 0
+          version-switch-buffer: # optional, default is 0
           # Traffic split method to be used. Allowed values are pod, smi
           traffic-split-method: # optional, default is pod
           # Baseline and canary replicas count; valid value i.e between 0 to 100.
@@ -83,3 +90,49 @@ jobs:
           force: # optional
           # Github token
           token: ${{ secrets.GH_TOKEN }} # default is ${{ github.token }}
+
+  approveapp:
+    runs-on: ubuntu-latest
+    needs: deployapp
+    environment: akspromotion
+    steps:
+      - run: echo asked for approval
+
+  promotereject:
+    runs-on: ubuntu-latest
+    needs: approveapp
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          resource-group: ${{ env.RESOURCE_GROUP }}
+
+      - uses: azure/k8s-deploy@v1.4
+        if: ${{ success() }}
+        with:
+          namespace: default
+          manifests: |
+            ./kubernetes/service.yaml
+            ./kubernetes/green-deploy.yaml
+          images: |
+            demogaurav.azurecr.io/green-nginx:1
+          strategy: blue-green
+          traffic-split-method: pod
+          action: promote  #deploy is the default; we will later use this to promote/reject
+
+      - uses: azure/k8s-deploy@v1.4
+        if: ${{ failure() }}
+        with:
+          namespace: default
+          manifests: |
+            ./kubernetes/service.yaml
+            ./kubernetes/blue-deploy.yaml
+          images: |
+            demogaurav.azurecr.io/blue-nginx:1
+          strategy: blue-green
+          traffic-split-method: pod
+          action: reject  #deploy is the default; we will later use this to promote/reject
+          
