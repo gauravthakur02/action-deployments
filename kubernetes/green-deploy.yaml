@@ -21,12 +21,10 @@ spec:
   selector:
       matchLabels:
         app: nginx
-        version: "2"
   template:
     metadata:
       labels:
         app: nginx
-        version: "2"
     spec:
       containers: 
         - name: nginx

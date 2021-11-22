@@ -59,7 +59,7 @@ jobs:
         uses: azure/k8s-deploy@v1.4
         with:
           # Choose the target Kubernetes namespace. If the namespace is not provided, the commands will run in the default namespace.
-          namespace: # optional
+          namespace: default
           # Path to the manifest files which will be used for deployment.
           manifests: |
               ./kubernetes/service.yaml
