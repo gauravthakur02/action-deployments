@@ -242,7 +242,7 @@ jobs:
           traffic-split-method: pod
           action: reject  #deploy is the default; we will later use this to promote/reject
 ```
-![Blue-Green Deployment Workflow]()
+![Blue-Green Deployment Workflow](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/blue-green.png)
 * For Canary deployment, create `canary.yaml` file:
 ```yml
 # This is a basic workflow to help you get started with Actions
@@ -353,37 +353,37 @@ jobs:
           percentage: 20
           baseline-and-canary-replicas: 2
 ```
-![Canary Deployment Workflow]()
+![Canary Deployment Workflow](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/canary.png)
 ---
 4. **Run the `blue-green-strategy` workflow:**
-* ![deployapp]()
-    * ![pod1]()
-    * ![service1]()
-    * ![app1]()
-* ![approveapp]()
-* ![promotereject]()
-    * ![pod2]()
-    * ![service2]()
-    * ![app2]()
+* ![deployapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/deployapp.png)
+    * ![pod1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/pod1.png)
+    * ![service1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/service1.png)
+    * ![app1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/app1.png)
+* ![approveapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/approveapp.png)
+* ![promotereject](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/promotereject.png)
+    * ![pod2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/pod2.png)
+    * ![service2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/service2.png)
+    * ![app2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/app2.png)
 ---
 5. **Run the `canary-strategy` workflow:**
-* ![deployapp]()
-    * ![pod1]()
-    * ![service1]()
-    * ![app1]()
-* ![approveapp]()
-* ![promotereject]()
-    * ![pod2]()
-    * ![service2]()
-    * ![app2]()
+* ![deployapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/deployapp.png)
+    * ![pod1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/pod1.png)
+    * ![service1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/service1.png)
+    * ![app1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/app1.png)
+* ![approveapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/approveapp.png)
+* ![promotereject](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/promotereject.png)
+    * ![pod2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/pod2.png)
+    * ![service2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/service2.png)
+    * ![app2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/app2.png)
 ---
 6. **Additional configurations for workflow setup:**
 * Action Secrets:
 >Secrets are environment variables that are encrypted. Anyone with collaborator access to this repository can use these secrets for Actions.
 Secrets are not passed to workflows that are triggered by a pull request from a fork. Learn more about secrets [here](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-storing-encrypted-secrets).
-![secrets]()
+![secrets](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/secrets.png)
 * Environments:
 >Environments are used to describe a general deployment target like `production`, `staging`, or `development`. When a GitHub Actions workflow deploys to an environment, the environment is displayed on the main page of the repository.
 Learn more about [environments](https://help.github.com/en/github/working-with-github-actions/managing-environments-in-github-actions).
-![environments]()
+![environments](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/environments.png)
 
