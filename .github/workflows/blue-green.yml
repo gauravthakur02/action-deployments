@@ -79,7 +79,7 @@ jobs:
           # Percentage of traffic redirect to canary deployment
           percentage: # optional, default is 0
           # deploy/promote/reject
-          action: # default is deploy
+          action: deploy # default is deploy
           # Deploy when a previous deployment already exists. If true then --force argument is added to the apply command
           force: # optional
           # Github token
