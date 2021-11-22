@@ -54,9 +54,6 @@ jobs:
           namespace: # optional
           # Path to the manifest files which will be used for deployment.
           manifests: |
-            # The manifest files are in YAML format.
-            # The files can be found in the GitHub repository.
-            # The files are relative to the root of the repository.
             - ./kubernetes/blue-deploy.yaml
             - ./kubernetes/green-deploy.yaml
             - ./kubernetes/service.yaml
