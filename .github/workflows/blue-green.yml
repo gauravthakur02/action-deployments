@@ -58,7 +58,7 @@ jobs:
           manifests: ./kubernetes/green-deploy.yaml
             #  ./kubernetes/green-deploy.yaml
           # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
-          images: demogaurav.azurecr.io/nginx-html:2 # optional
+          images: demogaurav.azurecr.io/green-nginx:1 # optional
           # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
           imagepullsecrets: # optional
           # Version of kubectl. Installs a specific version of kubectl binary
@@ -66,7 +66,7 @@ jobs:
           # Deployment strategy to be used. Allowed values are none, canary and blue-green
           strategy: blue-green # optional, default is none
           # Route based on service, ingress or SMI for blue-green strategy
-          route-method: # optional, default is service
+          route-method: service # optional, default is service
           # Indicates the buffer time in minutes before the switch is made to the green version (max is 300 min ie. 5hrs)
           version-switch-buffer: 2 # optional, default is 0
           # Traffic split method to be used. Allowed values are pod, smi
