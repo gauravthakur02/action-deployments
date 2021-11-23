@@ -1,10 +1,16 @@
 # Guide to "blue-green" and "canary" deployments using GitHub Actions
 
 ## What is Blue/Green deployment strategy in Kubernetes?
+| ![blue-green-deploy-process](https://github.com/gauravthakur02/action-deployments/blob/2c3e03a0bc9503d87dbcf17606b6cdd377c77925/img/blue-green-deployment-process.gif) |
+| :--: |
+| *Blue/Green Deployment* |
 >Blue/Green deployments are a form of progressive delivery where a new version of the application is deployed while the old version still exists. The two versions coexist for a brief period of time while user traffic is routed to the new version, before the old version is discarded (if all goes well).
 
 ---
 ## What is Canary deployment strategy in Kubernetes?
+| ![canary-deploy-process](https://github.com/gauravthakur02/action-deployments/blob/2c3e03a0bc9503d87dbcf17606b6cdd377c77925/img/canary-deploy.gif) |
+| :--: |
+| *Canary Deployment* |
 >Canary deployment strategy involves deploying new versions of an application next to stable production versions to see how the canary version compares against the baseline before promoting or rejecting the deployment. 
 
 ---
@@ -242,7 +248,9 @@ jobs:
           traffic-split-method: pod
           action: reject  #deploy is the default; we will later use this to promote/reject
 ```
-![Blue-Green Deployment Workflow](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/blue-green.png)
+| ![Blue-Green Deployment Workflow](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/blue-green.png) |
+| :--: |
+| *Blue/Green Deployment Workflow* |
 * For Canary deployment, create `canary.yaml` file:
 ```yml
 # This is a basic workflow to help you get started with Actions
@@ -353,37 +361,78 @@ jobs:
           percentage: 20
           baseline-and-canary-replicas: 2
 ```
-![Canary Deployment Workflow](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/canary.png)
+| ![Canary Deployment Workflow](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/canary.png) |
+| :--: |
+| *Canary Deployment Workflow* |
 ---
 4. **Run the `blue-green-strategy` workflow:**
-* ![deployapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/deployapp.png)
-    * ![pod1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/pod1.png)
-    * ![service1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/service1.png)
-    * ![app1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/app1.png)
-* ![approveapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/approveapp.png)
-* ![promotereject](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/promotereject.png)
-    * ![pod2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/pod2.png)
-    * ![service2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/service2.png)
-    * ![app2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/app2.png)
+* | *Deployapp* |
+  | :--: |
+  | ![deployapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/deployapp.png) |
+    * | *Pods* |
+      | :--: |
+      | ![pod1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/pod1.png) |
+    * | *Services* |
+      | :--: |
+      | ![service1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/service1.png) |
+    * | *Application Version 1* |
+      | :--: |
+      | ![app1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/app1.png) |
+* | *Approveapp* |
+  | :--: |
+  | ![approveapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/approveapp.png) |
+* | *Promotereject* |
+  | :--: |
+  | ![promotereject](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/promotereject.png) |
+    * | *Pods* |
+      | :--: |
+      | ![pod2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/pod2.png) |
+    * | *Services* |
+      | :--: |
+      | ![service2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/service2.png) |
+    * | *Application Version 2* |
+      | :--: |
+      | ![app2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/app2.png) |
 ---
 5. **Run the `canary-strategy` workflow:**
-* ![deployapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/deployapp.png)
-    * ![pod1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/pod1.png)
-    * ![service1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/service1.png)
-    * ![app1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/app1.png)
-* ![approveapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/approveapp.png)
-* ![promotereject](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/promotereject.png)
-    * ![pod2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/pod2.png)
-    * ![service2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/service2.png)
-    * ![app2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/app2.png)
+* | *Deployapp* |
+  | :--: |
+  | ![deployapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/deployapp.png) |
+    * | *Pods* |
+      | :--: |
+      | ![pod1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/pod1.png) |
+    * | *Services* |
+      | :--: |
+      | ![service1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/service1.png) |
+    * | *Application Version 1* |
+      | :--: |
+      | ![app1](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/app1.png) |
+* | *Approveapp* |
+  | :--: |
+  | ![approveapp](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/approveapp.png) |
+* | *Promotereject* |
+  | :--: |
+  | ![promotereject](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/promotereject.png) |
+    * | *Pods* |
+      | :--: |
+      | ![pod2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/pod2.png) |
+    * | *Services* |
+      | :--: |
+      | ![service2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/service2.png) |
+    * | *Application Version 2* |
+      | :--: |
+      | ![app2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/app2.png) |
 ---
 6. **Additional configurations for workflow setup:**
 * Action Secrets:
 >Secrets are environment variables that are encrypted. Anyone with collaborator access to this repository can use these secrets for Actions.
 Secrets are not passed to workflows that are triggered by a pull request from a fork. Learn more about secrets [here](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-storing-encrypted-secrets).
-![secrets](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/secrets.png)
+| ![secrets](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/secrets.png) |
+| :--: |
+| *Action Secrets* |
 * Environments:
 >Environments are used to describe a general deployment target like `production`, `staging`, or `development`. When a GitHub Actions workflow deploys to an environment, the environment is displayed on the main page of the repository.
 Learn more about [environments](https://help.github.com/en/github/working-with-github-actions/managing-environments-in-github-actions).
-![environments](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/environments.png)
-
+| ![environments](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/environments.png) |
+| :--: |
+| *Environments* |
