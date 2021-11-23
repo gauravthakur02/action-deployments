@@ -427,12 +427,14 @@ jobs:
 * Action Secrets:
 >Secrets are environment variables that are encrypted. Anyone with collaborator access to this repository can use these secrets for Actions.
 Secrets are not passed to workflows that are triggered by a pull request from a fork. Learn more about secrets [here](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-storing-encrypted-secrets).
+
 | ![secrets](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/secrets.png) |
 | :--: |
 | *Action Secrets* |
 * Environments:
 >Environments are used to describe a general deployment target like `production`, `staging`, or `development`. When a GitHub Actions workflow deploys to an environment, the environment is displayed on the main page of the repository.
 Learn more about [environments](https://help.github.com/en/github/working-with-github-actions/managing-environments-in-github-actions).
+
 | ![environments](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/environments.png) |
 | :--: |
 | *Environments* |
