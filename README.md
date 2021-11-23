@@ -14,7 +14,7 @@
 >Canary deployment strategy involves deploying new versions of an application next to stable production versions to see how the canary version compares against the baseline before promoting or rejecting the deployment. 
 
 ---
-### **This is a simple tutorial on how to do [Blue/Green Deployment] on Kubernetes.**
+### **This is a simple tutorial on how to do [Blue/Green Deployment] and [Canary Deployment] on Kubernetes.**
 
 ### Prerequisites
 * Any Kubernetes cluster 1.3+ should work. Create an [AKS Cluster](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough) using [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/):
