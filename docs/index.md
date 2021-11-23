@@ -7,7 +7,7 @@
 
 ---
 ## What is Canary deployment strategy in Kubernetes?
-![canary-deploy-process](https://github.com/gauravthakur02/action-deployments/blob/2c3e03a0bc9503d87dbcf17606b6cdd377c77925/img/canary-deploy.gif)
+![canary-deploy-process](img/canary-deploy.gif)
 *Canary Deployment*
 >Canary deployment strategy involves deploying new versions of an application next to stable production versions to see how the canary version compares against the baseline before promoting or rejecting the deployment. 
 
@@ -32,6 +32,7 @@ az aks stop --name myAKSCluster --resource-group myResourceGroup
 ---
 1. **Create Docker image from Dockerfile in `/nginx-html`:**
 >Edit the `index.html` file to get different webpage message on each new docker image created from the below `Dockerfile`. (For this demo, I have created two docker images "_demo.azurecr.io/blue-nginx:1_" and "_demo.azurecr.io/green-nginx:1_")
+
 ```
 FROM ubuntu
 
