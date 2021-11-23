@@ -1,7 +1,7 @@
 # Guide to "blue-green" and "canary" deployments using GitHub Actions
 
 ## What is Blue/Green deployment strategy in Kubernetes?
-![blue-green-deploy-process](https://github.com/gauravthakur02/action-deployments/blob/2c3e03a0bc9503d87dbcf17606b6cdd377c77925/img/blue-green-deployment-process.gif)
+![blue-green-deploy-process](https://raw.githubusercontent.com/gauravthakur02/action-deployments/main/img/blue-green-deployment-process.gif)
 *Blue/Green Deployment*
 >Blue/Green deployments are a form of progressive delivery where a new version of the application is deployed while the old version still exists. The two versions coexist for a brief period of time while user traffic is routed to the new version, before the old version is discarded (if all goes well).
 
@@ -32,7 +32,7 @@ az aks stop --name myAKSCluster --resource-group myResourceGroup
 ---
 1. **Create Docker image from Dockerfile in `/nginx-html`:**
 >Edit the `index.html` file to get different webpage message on each new docker image created from the below `Dockerfile`. (For this demo, I have created two docker images "_demo.azurecr.io/blue-nginx:1_" and "_demo.azurecr.io/green-nginx:1_")
-``
+```
 FROM ubuntu
 
 RUN apt-get update
