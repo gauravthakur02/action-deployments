@@ -364,6 +364,7 @@ jobs:
 | ![Canary Deployment Workflow](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/canary.png) |
 | :--: |
 | *Canary Deployment Workflow* |
+
 ---
 4. **Run the `blue-green-strategy` workflow:**
 * | *Deployapp* |
@@ -393,6 +394,7 @@ jobs:
     * | *Application Version 2* |
       | :--: |
       | ![app2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/blue-green/app2.png) |
+
 ---
 5. **Run the `canary-strategy` workflow:**
 * | *Deployapp* |
@@ -422,6 +424,7 @@ jobs:
     * | *Application Version 2* |
       | :--: |
       | ![app2](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/app2.png) |
+
 ---
 6. **Additional configurations for workflow setup:**
 * Action Secrets:
@@ -438,3 +441,11 @@ Learn more about [environments](https://help.github.com/en/github/working-with-g
 | ![environments](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/environments.png) |
 | :--: |
 | *Environments* |
+
+---
+## Authors
+<a href="https://github.com/gauravthakur02/action-deployments/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=gauravthakur02/action-deployments" />
+</a>
+
+- **Gaurav Thakur** - [LinkedIn](https://www.linkedin.com/in/gaurav-kumar-04305411a/)
